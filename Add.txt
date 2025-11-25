@@ -1,0 +1,50 @@
+App Design Document: Project "Find My File"
+Document Version: 5.0 (Revised)
+
+Date: October 24, 2025
+
+Project Lead: Sumanth
+
+1. Vision & Executive Summary
+High Concept: "Find My File" is a smart, private, offline semantic search engine for Android that allows users to find files based on their content and context using natural language.
+
+Target Platform: Android.
+
+Target Audience: All Android users who need a powerful and intuitive way to search their local files without compromising their privacy.
+
+Unique Selling Proposition (USP): The application combines a powerful Google ML Kit-based indexing engine with a sophisticated Mobile BERT model that translates human language into precise, content-aware search queries, all while working completely offline.
+
+2. Core Application Feature: The Intelligence Engine
+To maintain a minimal app size (under 50MB) and focus on a single, high-quality feature, "Find My File" is dedicated exclusively to search. 
+Background Indexing Service: A lightweight background process scans user folders to build a rich, local search database. It uses a defined set of libraries to extract meaningful keywords, text, and metadata from each file.
+
+Natural Language Search Bar: The app's primary interface is a search bar that accepts natural language queries (e.g., "show me photos from my trip last summer" or "find the report I downloaded last week").
+
+Mobile BERT Query Processing: User queries are processed by a fine-tuned, 25MB quantized Mobile BERT model. This model acts as an "intent translator," converting the user's conversational language into a structured query (containing keywords, time-scapes, file types) that can be used to search the indexed database with high accuracy.
+
+3. File Processing & Indexing Strategy
+The app will support a wide range of common file types, each handled by a specialized, high-performance library.
+File Category,Supported Extensions,Processing Library & Method
+Documents,".pdf, .docx, .txt",Google ML Kit Text Recognition
+Spreadsheets,".xlsx, .xls, .csv",Google ML Kit Text Recognition
+Presentations,.pptx,Google ML Kit Text Recognition
+eBooks,.epub,Google ML Kit Text Recognition
+Images,".jpg, .png, .webp, .heic","Google ML Kit (Object, Face, Text Detection)"
+Media,".mp4, .mov, .m4a","Google ML Kit (Object, Face, Text Detection) on frames extracted at a rate of 1 frame per 10 seconds."
+Archives,".zip, .tar, .gz",Files are extracted in memory and their contents are processed by their respective type handlers.
+App Packages,.apk,Archive Unpacking + XML Parser to read the manifest for app name and metadata.
+Code,"Various (e.g., .js, .py, .java)",Google ML Kit Text Recognition
+Music,".mp3, .wav","flutter_audio_metadata_reader (for artist, album tags) and flutter_fft (for audio analysis)."
+Technical Architecture & Stack
+Core Framework: Flutter (using Dart).
+
+Architecture Principle: 100% Offline & Private. No data ever leaves the user's device.
+
+Core Constraint: Total application size must be kept under 50MB. 
+Component,Technology / Flutter Package,Purpose
+UI Framework,Flutter,Building the user interface.
+Local Database,sqflite,Storing the indexed file metadata and keywords.
+AI Model Runtime,tflite_flutter,To run the Mobile BERT model for query processing.
+File Indexing,Google ML Kit,"The primary engine for all text and image-based analysis (OCR, Object/Face detection)."
+Audio Analysis,"flutter_audio_metadata_reader, flutter_fft",Extracting metadata and analyzing audio files.
+File System,"path_provider, dart:io",Core file system access and management.

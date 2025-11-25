@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strawberry Studios | AI Services</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        strawberry: {
+                            50: '#fff0f0',
+                            100: '#ffdede',
+                            500: '#ef233c', // Approximate red from logo
+                            600: '#d90429', // Darker red
+                            900: '#8d0018',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes blob {
+            0% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(239, 35, 60, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(239, 35, 60, 0.6); }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+        .neural-network {
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(239, 35, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(239, 35, 60, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(239, 35, 60, 0.05) 0%, transparent 50%);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 antialiased bg-gray-50">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Logo Area -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <!-- Added onerror fallback so preview works even if file is missing -->
+                    <img src="company logo.JPG" 
+                         onerror="this.src='https://placehold.co/100x100/ef233c/ffffff?text=S'" 
+                         alt="Strawberry Studios Logo" 
+                         class="h-12 w-12 rounded-lg object-cover shadow-sm">
+                    <span class="font-bold text-2xl text-gray-900 tracking-tight">Strawberry<span class="text-strawberry-600">Studios</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-gray-600 hover:text-strawberry-600 font-medium transition-colors">Home</a>
+                    <a href="#about" class="text-gray-600 hover:text-strawberry-600 font-medium transition-colors">About</a>
+                    <a href="#projects" class="text-gray-600 hover:text-strawberry-600 font-medium transition-colors">Projects</a>
+                    <a href="#contact" class="px-5 py-2 bg-strawberry-600 text-white rounded-full hover:bg-strawberry-900 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-medium">Contact Us</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button onclick="toggleMenu()" class="text-gray-600 hover:text-strawberry-600 focus:outline-none">
+                        <i data-lucide="menu" class="w-8 h-8"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" onclick="toggleMenu()" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-strawberry-600 hover:bg-strawberry-50 rounded-md">Home</a>
+                <a href="#about" onclick="toggleMenu()" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-strawberry-600 hover:bg-strawberry-50 rounded-md">About</a>
+                <a href="#projects" onclick="toggleMenu()" class="block px-3 py-3 text-base font-medium text-gray-700 hover:text-strawberry-600 hover:bg-strawberry-50 rounded-md">Projects</a>
+                <a href="#contact" onclick="toggleMenu()" class="block px-3 py-3 text-base font-medium text-strawberry-600 font-bold bg-strawberry-50 rounded-md">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-24 pb-16 lg:pt-32 lg:pb-32 overflow-hidden bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 neural-network">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center fade-in">
+                <!-- AI-Themed Banner -->
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl mb-12 border-2 border-strawberry-500/30 transform hover:scale-[1.01] transition-transform duration-500 animate-pulse-glow">
+                    <div class="relative bg-gradient-to-br from-gray-900 via-strawberry-900/20 to-gray-900 h-[400px] flex items-center justify-center overflow-hidden">
+                        <!-- Neural Network Pattern -->
+                        <div class="absolute inset-0 opacity-20">
+                            <!-- Grid Pattern -->
+                            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(239, 35, 60, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(239, 35, 60, 0.3) 1px, transparent 1px); background-size: 50px 50px;"></div>
+                            <!-- Animated dots -->
+                            <div class="absolute top-10 left-10 w-3 h-3 bg-strawberry-500 rounded-full animate-pulse"></div>
+                            <div class="absolute top-20 right-20 w-2 h-2 bg-red-400 rounded-full animate-pulse animation-delay-2000"></div>
+                            <div class="absolute bottom-10 left-1/3 w-3 h-3 bg-strawberry-600 rounded-full animate-pulse animation-delay-4000"></div>
+                            <div class="absolute bottom-20 right-1/3 w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                        </div>
+                        
+                        <!-- Logo and text -->
+                        <div class="relative z-10 flex flex-col items-center text-center px-4">
+                            <div class="relative mb-8">
+                                <div class="absolute inset-0 bg-strawberry-500 rounded-3xl blur-2xl opacity-50 animate-pulse"></div>
+                                <img src="company logo.JPG" 
+                                     onerror="this.src='https://placehold.co/200x200/ef233c/ffffff?text=AI'" 
+                                     alt="Strawberry Studios Logo" 
+                                     class="relative h-32 w-32 md:h-40 md:w-40 rounded-3xl object-cover shadow-2xl border-4 border-strawberry-500/50">
+                            </div>
+                            <h2 class="text-5xl md:text-7xl font-bold text-white tracking-tight mb-4 drop-shadow-2xl">
+                                strawberry <span class="text-strawberry-400">Studios</span>
+                            </h2>
+                            <p class="text-gray-300 text-lg md:text-xl max-w-2xl mt-4">
+                                <span class="text-strawberry-400 font-semibold">AI-Powered Solutions</span> for the Modern World
+                            </p>
+                            <div class="h-1 w-32 bg-gradient-to-r from-transparent via-strawberry-500 to-transparent rounded-full mt-4"></div>
+                        </div>
+                        
+                        <!-- Tech decorative elements -->
+                        <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+                            <div class="absolute top-1/4 left-10 w-20 h-20 border-2 border-strawberry-500/30 rounded-lg transform rotate-45"></div>
+                            <div class="absolute bottom-1/4 right-10 w-16 h-16 border-2 border-red-500/30 rounded-lg transform -rotate-12"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight mb-8">
+                    Transforming <span class="text-transparent bg-clip-text bg-gradient-to-r from-strawberry-500 to-red-500">Artificial Intelligence</span> Into Real Solutions
+                </h1>
+                
+                <p class="mt-6 max-w-3xl mx-auto text-xl md:text-2xl text-gray-300 leading-relaxed font-light">
+                    We deliver cutting-edge AI services that empower businesses and individuals with intelligent automation, machine learning, and innovative solutions. 
+                    <span class="block mt-3 text-lg text-strawberry-400 font-medium">Hyderabad's Premier AI Development Studio</span>
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#services" class="px-10 py-4 bg-gradient-to-r from-strawberry-600 to-red-600 text-white rounded-full font-semibold shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 text-lg border-2 border-strawberry-500">
+                        Explore AI Services
+                    </a>
+                    <a href="#about" class="px-10 py-4 bg-transparent text-white border-2 border-gray-600 rounded-full font-semibold hover:border-strawberry-500 hover:bg-strawberry-500/10 transition-all text-lg">
+                        About Our Studio
+                    </a>
+                </div>
+                
+                <!-- AI Capabilities Quick View -->
+                <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-strawberry-500 transition-all transform hover:-translate-y-1">
+                        <div class="bg-gradient-to-br from-strawberry-500 to-red-600 rounded-xl p-4 inline-block mb-3 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M9 13a4.5 4.5 0 0 0 3-4"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M12 13h4"/><path d="M12 18h6a2 2 0 0 1 2 2v1"/><path d="M12 8h8"/><path d="M16 8V5a2 2 0 0 1 2-2"/><circle cx="16" cy="13" r=".5"/><circle cx="18" cy="3" r=".5"/><circle cx="20" cy="21" r=".5"/><circle cx="20" cy="8" r=".5"/></svg>
+                        </div>
+                        <h3 class="text-white font-semibold mb-1">Machine Learning</h3>
+                        <p class="text-gray-400 text-sm">Custom AI models</p>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-strawberry-500 transition-all transform hover:-translate-y-1">
+                        <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 inline-block mb-3 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                        </div>
+                        <h3 class="text-white font-semibold mb-1">AI Automation</h3>
+                        <p class="text-gray-400 text-sm">Intelligent workflows</p>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-strawberry-500 transition-all transform hover:-translate-y-1">
+                        <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 inline-block mb-3 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                        </div>
+                        <h3 class="text-white font-semibold mb-1">Data Analytics</h3>
+                        <p class="text-gray-400 text-sm">Deep insights</p>
+                    </div>
+                    <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-strawberry-500 transition-all transform hover:-translate-y-1">
+                        <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-4 inline-block mb-3 shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>
+                        </div>
+                        <h3 class="text-white font-semibold mb-1">NLP Solutions</h3>
+                        <p class="text-gray-400 text-sm">Language AI</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Background Decor -->
+        <div class="absolute top-0 left-0 -z-10 w-full h-full opacity-20">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-strawberry-100 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
+            <div class="absolute top-40 right-10 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 left-1/2 w-72 h-72 bg-red-100 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+        </div>
+    </section>
+
+    <!-- AI Services Section -->
+    <section id="services" class="py-24 bg-gray-900 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-strawberry-500 rounded-full blur-3xl opacity-10"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-16">
+                <span class="inline-block px-4 py-2 bg-strawberry-500/20 text-strawberry-400 rounded-full text-sm font-semibold mb-4">Our AI Services</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Comprehensive AI Solutions</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">From intelligent automation to advanced machine learning, we provide end-to-end AI services tailored to your needs.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Card 1 -->
+                <div class="bg-gradient-to-br from-gray-800 to-gray-800/80 rounded-2xl p-8 border-2 border-gray-700 hover:border-strawberry-500 transition-all shadow-lg hover:shadow-2xl transform hover:-translate-y-2 group">
+                    <div class="bg-gradient-to-br from-strawberry-500 to-red-600 rounded-2xl p-4 inline-block mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="brain-circuit" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Custom AI Models</h3>
+                    <p class="text-gray-300 mb-4 leading-relaxed">Develop tailored machine learning models designed specifically for your business challenges and data requirements.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-strawberry-400 mr-2"></i>Predictive Analytics</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-strawberry-400 mr-2"></i>Pattern Recognition</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-strawberry-400 mr-2"></i>Model Training & Optimization</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 2 -->
+                <div class="bg-gradient-to-br from-gray-800 to-gray-800/80 rounded-2xl p-8 border-2 border-gray-700 hover:border-blue-500 transition-all shadow-lg hover:shadow-2xl transform hover:-translate-y-2 group">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl p-4 inline-block mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="message-square-text" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">NLP & Chatbots</h3>
+                    <p class="text-gray-300 mb-4 leading-relaxed">Build intelligent conversational AI and natural language processing solutions that understand and respond naturally.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-blue-400 mr-2"></i>Intelligent Chatbots</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-blue-400 mr-2"></i>Sentiment Analysis</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-blue-400 mr-2"></i>Text Generation</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 3 -->
+                <div class="bg-gradient-to-br from-gray-800 to-gray-800/80 rounded-2xl p-8 border-2 border-gray-700 hover:border-purple-500 transition-all shadow-lg hover:shadow-2xl transform hover:-translate-y-2 group">
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl p-4 inline-block mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="eye" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Computer Vision</h3>
+                    <p class="text-gray-300 mb-4 leading-relaxed">Implement advanced image and video analysis systems for object detection, recognition, and visual intelligence.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-purple-400 mr-2"></i>Object Detection</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-purple-400 mr-2"></i>Facial Recognition</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-purple-400 mr-2"></i>Image Classification</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 4 -->
+                <div class="bg-gradient-to-br from-gray-800 to-gray-800/80 rounded-2xl p-8 border-2 border-gray-700 hover:border-green-500 transition-all shadow-lg hover:shadow-2xl transform hover:-translate-y-2 group">
+                    <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl p-4 inline-block mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="workflow" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">AI Automation</h3>
+                    <p class="text-gray-300 mb-4 leading-relaxed">Streamline business processes with intelligent automation that learns and adapts to improve efficiency.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2"></i>Process Automation</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2"></i>Workflow Optimization</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-green-400 mr-2"></i>Smart Decision Making</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 5 -->
+                <div class="bg-gradient-to-br from-gray-800 to-gray-800/80 rounded-2xl p-8 border-2 border-gray-700 hover:border-orange-500 transition-all shadow-lg hover:shadow-2xl transform hover:-translate-y-2 group">
+                    <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl p-4 inline-block mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="bar-chart-3" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">Data Analytics AI</h3>
+                    <p class="text-gray-300 mb-4 leading-relaxed">Transform raw data into actionable insights with AI-powered analytics and intelligent reporting systems.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-orange-400 mr-2"></i>Predictive Analytics</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-orange-400 mr-2"></i>Data Visualization</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-orange-400 mr-2"></i>Business Intelligence</li>
+                    </ul>
+                </div>
+                
+                <!-- Service Card 6 -->
+                <div class="bg-gradient-to-br from-gray-800 to-gray-800/80 rounded-2xl p-8 border-2 border-gray-700 hover:border-pink-500 transition-all shadow-lg hover:shadow-2xl transform hover:-translate-y-2 group">
+                    <div class="bg-gradient-to-br from-pink-500 to-pink-600 rounded-2xl p-4 inline-block mb-6 group-hover:scale-110 transition-transform">
+                        <i data-lucide="smartphone" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3">AI Mobile Apps</h3>
+                    <p class="text-gray-300 mb-4 leading-relaxed">Develop intelligent mobile applications with offline AI capabilities and seamless user experiences.</p>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-pink-400 mr-2"></i>On-Device AI</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-pink-400 mr-2"></i>Privacy-First Design</li>
+                        <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-pink-400 mr-2"></i>Cross-Platform Solutions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-gradient-to-b from-gray-800 to-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-6">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-strawberry-500/20 text-strawberry-400 text-sm font-medium">
+                        <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Hyderabad, Telangana, India
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">About Strawberry Studios</h2>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        Strawberry Studios is an innovative AI services company specializing in cutting-edge artificial intelligence solutions. We transform complex AI technology into practical, privacy-focused applications that empower businesses and enhance everyday digital experiences.
+                    </p>
+                    <p class="text-lg text-gray-300 leading-relaxed mt-4">
+                        Our expertise spans machine learning, natural language processing, computer vision, and intelligent automation—delivering solutions that are not just powerful, but also intuitive and accessible.
+                    </p>
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 p-8 rounded-2xl border-2 border-strawberry-500/30 shadow-lg hover:shadow-xl transition-shadow">
+                        <h3 class="text-lg font-semibold text-white mb-4">Leadership</h3>
+                        <div class="flex items-center space-x-4">
+                            <div class="h-16 w-16 rounded-full bg-gradient-to-br from-strawberry-500 to-red-600 flex items-center justify-center text-white font-bold text-2xl shadow-md">
+                                RS
+                            </div>
+                            <div>
+                                <p class="font-bold text-white text-lg">Racha Sumanth</p>
+                                <p class="text-sm text-strawberry-400 font-medium">Founder & CEO</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-strawberry-500 to-red-600 rounded-3xl transform rotate-3 opacity-20 group-hover:rotate-6 transition-transform duration-300"></div>
+                    <div class="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-10 text-white shadow-2xl overflow-hidden">
+                        <div class="bg-strawberry-500 rounded-2xl p-3 inline-block mb-6">
+                            <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold mb-6">Our Mission</h3>
+                        <p class="text-gray-200 text-lg leading-relaxed">
+                            To democratize artificial intelligence by creating innovative AI services that are powerful yet accessible, privacy-conscious, and designed to solve real-world problems for businesses and individuals alike.
+                        </p>
+                        <!-- Decorative circles -->
+                        <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-strawberry-500 rounded-full opacity-20 blur-2xl"></div>
+                        <div class="absolute -top-5 -left-5 w-32 h-32 bg-red-500 rounded-full opacity-10 blur-xl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 bg-gray-900 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-10 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="text-center mb-20">
+                <span class="inline-block px-4 py-2 bg-blue-500/20 text-blue-400 rounded-full text-sm font-semibold mb-4">AI Products</span>
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">Flagship AI Solutions</h2>
+                <p class="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">Pioneering intelligent applications that combine cutting-edge AI with uncompromising privacy and offline capabilities.</p>
+            </div>
+
+            <div class="max-w-5xl mx-auto bg-gray-800 rounded-3xl shadow-2xl overflow-hidden border-2 border-gray-700 transform transition-all hover:shadow-2xl hover:-translate-y-1">
+                <div class="flex flex-col md:flex-row">
+                    <div class="md:w-2/5 bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 p-12 flex flex-col items-center justify-center text-center md:border-r border-gray-100">
+                        <div class="relative w-48 h-48 mb-8 group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 rounded-3xl blur-3xl opacity-30 group-hover:opacity-50 transition-opacity duration-500 animate-pulse"></div>
+                            <!-- App Icon with Fallback -->
+                            <img src="IMG_20251109_161016.JPG" 
+                                 onerror="this.src='https://placehold.co/200x200/fbbf24/ffffff?text=App+Icon'" 
+                                 alt="Find My File App Icon" 
+                                 class="relative w-full h-full object-contain drop-shadow-2xl transform group-hover:scale-110 transition-transform duration-500 rounded-3xl">
+                        </div>
+                        <h3 class="text-3xl font-bold text-gray-900 mb-3">Find My File</h3>
+                        <span class="inline-block px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full text-sm font-bold uppercase tracking-wide shadow-lg">Coming Soon</span>
+                    </div>
+                    <div class="md:w-3/5 p-10 flex flex-col justify-center">
+                        <h4 class="text-xl font-bold text-white mb-4 flex items-center">
+                            <i data-lucide="sparkles" class="w-6 h-6 text-strawberry-400 mr-2"></i>
+                            AI-Powered Semantic Search
+                        </h4>
+                        <p class="text-gray-300 mb-6 leading-relaxed">
+                            A revolutionary Android application powered by advanced AI that transforms file searching. Using natural language processing and machine learning, it understands context and intent—just describe what you're looking for in plain English, no filenames needed.
+                        </p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 p-1 bg-green-500/20 rounded-full mt-1">
+                                    <i data-lucide="shield-check" class="w-4 h-4 text-green-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-base font-medium text-white">100% Offline & Private</h5>
+                                    <p class="text-sm text-gray-400">Your data never leaves your device. We use advanced on-device processing.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 p-1 bg-purple-500/20 rounded-full mt-1">
+                                    <i data-lucide="brain-circuit" class="w-4 h-4 text-purple-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-base font-medium text-white">Natural Language Understanding</h5>
+                                    <p class="text-sm text-gray-400">Powered by state-of-the-art AI to understand human context like "Show me receipts from last week".</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 p-1 bg-orange-500/20 rounded-full mt-1">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-orange-400"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-base font-medium text-white">Deep Content Indexing</h5>
+                                    <p class="text-sm text-gray-400">Scans text within documents, images, and media without sending bytes to the cloud.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-gray-700 flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-gray-400">
+                                <i data-lucide="smartphone" class="w-5 h-5"></i>
+                                <span class="text-sm">Android Exclusive</span>
+                            </div>
+                            <button onclick="showFindMyFileDetails()" class="text-strawberry-400 font-semibold hover:text-strawberry-300 flex items-center transition-colors">
+                                Learn More <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Find My File Details Section -->
+    <section id="find-my-file-details" class="hidden py-24 bg-gradient-to-b from-gray-900 to-gray-800 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-blue-500/10 to-transparent opacity-50"></div>
+        <!-- Close Button -->
+        <button onclick="closeFindMyFileDetails()" class="fixed top-24 right-8 z-50 bg-gray-800 hover:bg-gray-700 rounded-full p-3 shadow-xl transition-all transform hover:scale-110 border-2 border-gray-700">
+            <i data-lucide="x" class="w-6 h-6 text-white"></i>
+        </button>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center space-x-3 mb-6">
+                    <img src="IMG_20251109_161016.JPG" 
+                         onerror="this.src='https://placehold.co/100x100/fbbf24/ffffff?text=App'" 
+                         alt="Find My File Icon" 
+                         class="h-20 w-20 rounded-2xl shadow-xl">
+                    <div class="text-left">
+                        <h2 class="text-4xl md:text-5xl font-bold text-white">Find My File</h2>
+                        <p class="text-strawberry-400 font-semibold text-lg">Smart Semantic File Search</p>
+                    </div>
+                </div>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                    A revolutionary Android application that combines powerful AI with uncompromising privacy, transforming how you search for files on your device.
+                </p>
+            </div>
+
+            <!-- Vision & USP -->
+            <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-10 mb-12 border-2 border-blue-100 shadow-xl">
+                <div class="flex items-start space-x-4 mb-6">
+                    <div class="bg-blue-500 rounded-xl p-3">
+                        <i data-lucide="lightbulb" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Vision & Unique Selling Proposition</h3>
+                        <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                            <strong class="text-blue-600">High Concept:</strong> "Find My File" is a smart, private, offline semantic search engine for Android that allows users to find files based on their content and context using natural language.
+                        </p>
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            <strong class="text-purple-600">What Makes It Special:</strong> Combines a powerful ML-based indexing engine with advanced natural language processing that translates human language into precise, content-aware search queries—all while working completely offline.
+                        </p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-blue-600 font-bold text-3xl mb-2">&lt;50MB</div>
+                        <p class="text-gray-600">Total app size kept minimal</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-purple-600 font-bold text-3xl mb-2">100%</div>
+                        <p class="text-gray-600">Offline & Private</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-6 shadow-md">
+                        <div class="text-green-600 font-bold text-3xl mb-2">AI-Powered</div>
+                        <p class="text-gray-600">Mobile BERT intelligence</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Intelligence Engine -->
+            <div class="mb-12">
+                <h3 class="text-3xl font-bold text-white mb-8 flex items-center">
+                    <div class="bg-strawberry-500 rounded-xl p-3 mr-4">
+                        <i data-lucide="cpu" class="w-8 h-8 text-white"></i>
+                    </div>
+                    The Intelligence Engine
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 rounded-2xl p-8 shadow-lg border-2 border-gray-700 hover:border-orange-500 transition-all">
+                        <div class="bg-orange-500/20 rounded-xl p-3 inline-block mb-4">
+                            <i data-lucide="refresh-cw" class="w-6 h-6 text-orange-400"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Background Indexing</h4>
+                        <p class="text-gray-300 leading-relaxed">
+                            A lightweight background process continuously scans your folders, building a rich local search database with keywords, text, and metadata from every file.
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 rounded-2xl p-8 shadow-lg border-2 border-gray-700 hover:border-blue-500 transition-all">
+                        <div class="bg-blue-500/20 rounded-xl p-3 inline-block mb-4">
+                            <i data-lucide="message-circle" class="w-6 h-6 text-blue-400"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">Natural Language Search</h4>
+                        <p class="text-gray-300 leading-relaxed">
+                            Simply type what you're looking for in plain English: "show me photos from my trip last summer" or "find the report I downloaded last week."
+                        </p>
+                    </div>
+                    <div class="bg-gray-800 rounded-2xl p-8 shadow-lg border-2 border-gray-700 hover:border-purple-500 transition-all">
+                        <div class="bg-purple-500/20 rounded-xl p-3 inline-block mb-4">
+                            <i data-lucide="brain" class="w-6 h-6 text-purple-400"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-3">AI Query Processing</h4>
+                        <p class="text-gray-300 leading-relaxed">
+                            Our compact 25MB on-device AI model acts as an "intent translator," converting your conversational queries into structured searches with high accuracy.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File Support Table -->
+            <div class="mb-12">
+                <h3 class="text-3xl font-bold text-white mb-8 flex items-center">
+                    <div class="bg-green-500 rounded-xl p-3 mr-4">
+                        <i data-lucide="file-stack" class="w-8 h-8 text-white"></i>
+                    </div>
+                    Comprehensive File Support
+                </h3>
+                <div class="bg-gray-800 rounded-2xl shadow-xl border-2 border-gray-700 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gradient-to-r from-strawberry-600 to-red-700 text-white">
+                                <tr>
+                                    <th class="px-6 py-4 text-left font-semibold">File Category</th>
+                                    <th class="px-6 py-4 text-left font-semibold">Supported Formats</th>
+                                    <th class="px-6 py-4 text-left font-semibold">Processing Technology</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-700">
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">Documents</td>
+                                    <td class="px-6 py-4 text-gray-300">.pdf, .docx, .txt</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">AI-Powered Text Recognition</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">Spreadsheets</td>
+                                    <td class="px-6 py-4 text-gray-300">.xlsx, .xls, .csv</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">AI-Powered Text Recognition</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">Presentations</td>
+                                    <td class="px-6 py-4 text-gray-300">.pptx</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">AI-Powered Text Recognition</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">eBooks</td>
+                                    <td class="px-6 py-4 text-gray-300">.epub</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">AI-Powered Text Recognition</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">Images</td>
+                                    <td class="px-6 py-4 text-gray-300">.jpg, .png, .webp, .heic</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">Computer Vision (Object, Face, Text Detection)</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">Media</td>
+                                    <td class="px-6 py-4 text-gray-300">.mp4, .mov, .m4a</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">AI Video Analysis on extracted frames (1 per 10 sec)</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">Archives</td>
+                                    <td class="px-6 py-4 text-gray-300">.zip, .tar, .gz</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">In-memory extraction + content processing</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">App Packages</td>
+                                    <td class="px-6 py-4 text-gray-300">.apk</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">Archive unpacking + XML manifest parser</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">Code Files</td>
+                                    <td class="px-6 py-4 text-gray-300">.js, .py, .java, etc.</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">AI-Powered Text Recognition</td>
+                                </tr>
+                                <tr class="hover:bg-gray-700/50 transition-colors">
+                                    <td class="px-6 py-4 font-semibold text-white">Music</td>
+                                    <td class="px-6 py-4 text-gray-300">.mp3, .wav</td>
+                                    <td class="px-6 py-4 text-sm text-gray-400">Audio metadata reader + FFT analysis</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Architecture -->
+            <div class="mb-12">
+                <h3 class="text-3xl font-bold text-gray-900 mb-8 flex items-center">
+                    <div class="bg-indigo-500 rounded-xl p-3 mr-4">
+                        <i data-lucide="package" class="w-8 h-8 text-white"></i>
+                    </div>
+                    Technical Architecture
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-8 border-2 border-indigo-500/30 shadow-lg">
+                        <h4 class="text-xl font-bold text-white mb-6">Core Technologies</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="bg-indigo-500 rounded-lg p-2 mr-3 mt-1">
+                                    <i data-lucide="code" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Flutter Framework</p>
+                                    <p class="text-sm text-gray-400">Built with Dart for smooth, native performance</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-blue-500 rounded-lg p-2 mr-3 mt-1">
+                                    <i data-lucide="database" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">SQLite Database (sqflite)</p>
+                                    <p class="text-sm text-gray-400">Local storage for indexed file metadata</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-purple-500 rounded-lg p-2 mr-3 mt-1">
+                                    <i data-lucide="brain-circuit" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">TensorFlow Lite (tflite_flutter)</p>
+                                    <p class="text-sm text-gray-400">Running on-device AI for intelligent query processing</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-500 rounded-lg p-2 mr-3 mt-1">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">ML Kit Integration</p>
+                                    <p class="text-sm text-gray-400">Primary engine for text and image analysis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-8 border-2 border-green-500/30 shadow-lg">
+                        <h4 class="text-xl font-bold text-white mb-6">Core Principles</h4>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="bg-green-500 rounded-full p-1 mr-3 mt-1">
+                                    <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">100% Offline Operation</p>
+                                    <p class="text-sm text-gray-400">No internet connection required</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-500 rounded-full p-1 mr-3 mt-1">
+                                    <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Privacy First</p>
+                                    <p class="text-sm text-gray-400">Data never leaves your device</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-500 rounded-full p-1 mr-3 mt-1">
+                                    <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Minimal Size</p>
+                                    <p class="text-sm text-gray-400">Total app size under 50MB</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-green-500 rounded-full p-1 mr-3 mt-1">
+                                    <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-white">Single Focus</p>
+                                    <p class="text-sm text-gray-400">Dedicated to search excellence</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="text-center bg-gradient-to-r from-strawberry-600 to-red-600 rounded-3xl p-12 shadow-2xl">
+                <h3 class="text-3xl md:text-4xl font-bold text-white mb-4">Coming Soon to Android</h3>
+                <p class="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
+                    Be among the first to experience the future of file search. Sign up for early access and updates.
+                </p>
+                <button class="px-10 py-4 bg-white text-strawberry-600 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 text-lg">
+                    Notify Me on Launch
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 bg-gradient-to-b from-gray-900 to-gray-800 relative overflow-hidden">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-strawberry-500 rounded-full blur-3xl opacity-10"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-red-500 rounded-full blur-3xl opacity-10"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Let's Build the Future</h2>
+            <p class="text-lg text-gray-300 mb-10">
+                Interested in our services or want to know more about Find My File? 
+                Reach out to us in Hyderabad.
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <a href="mailto:contact@strawberrystudios.tech?subject=Inquiry%20about%20AI%20Services&body=Hello%20Strawberry%20Studios%20Team%2C%0A%0AI%20would%20like%20to%20inquire%20about%20your%20AI%20services.%0A%0A" class="flex items-center justify-center p-8 bg-gray-800 rounded-2xl hover:bg-gray-700 transition-all border-2 border-gray-700 hover:border-strawberry-500 group shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    <div class="p-3 bg-strawberry-500/20 rounded-xl group-hover:bg-strawberry-500/30 transition-colors mr-4">
+                        <i data-lucide="mail" class="w-8 h-8 text-strawberry-400"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-gray-400 font-medium mb-1">Email Us</p>
+                        <p class="font-bold text-white text-lg">contact@strawberrystudios.tech</p>
+                    </div>
+                </a>
+                <div class="flex items-center justify-center p-8 bg-gray-800 rounded-2xl border-2 border-gray-700 shadow-lg">
+                    <div class="p-3 bg-gray-700 rounded-xl mr-4">
+                        <i data-lucide="map-pin" class="w-8 h-8 text-gray-400"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-sm text-gray-400 font-medium mb-1">Visit Us</p>
+                        <p class="font-bold text-white text-lg">Hyderabad, Telangana</p>
+                    </div>
+                </div>
+            </div>
+
+            <a href="mailto:info@strawberrystudios.tech?subject=Get%20in%20Touch%20-%20Strawberry%20Studios&body=Hello%20Strawberry%20Studios%20Team%2C%0A%0AI%20would%20like%20to%20get%20in%20touch%20with%20you.%0A%0A" class="inline-block px-12 py-5 bg-gradient-to-r from-strawberry-600 to-red-600 text-white rounded-full font-bold shadow-xl hover:shadow-2xl hover:from-strawberry-700 hover:to-red-700 transition-all transform hover:-translate-y-1 text-lg">
+                Get in Touch
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-6 md:mb-0">
+                    <img src="company logo.JPG" 
+                         onerror="this.src='https://placehold.co/50x50/ffffff/000000?text=S'" 
+                         alt="Logo" 
+                         class="h-10 w-10 rounded-md opacity-90 grayscale hover:grayscale-0 transition-all">
+                    <span class="font-bold text-xl tracking-wide">Strawberry Studios</span>
+                </div>
+                
+                <div class="text-gray-500 text-sm">
+                    &copy; 2025 Strawberry Studios. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Show/Hide Find My File Details
+        function showFindMyFileDetails() {
+            const section = document.getElementById('find-my-file-details');
+            section.classList.remove('hidden');
+            // Smooth scroll to the section
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Re-initialize Lucide icons for the newly shown content
+            setTimeout(() => lucide.createIcons(), 100);
+        }
+
+        function closeFindMyFileDetails() {
+            const section = document.getElementById('find-my-file-details');
+            section.classList.add('hidden');
+            // Scroll back to projects section
+            document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Animation on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
